@@ -1,5 +1,5 @@
 import nltk
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
 import re
@@ -46,5 +46,26 @@ def predict():
     result = 'Positive' if prediction[0] == 1 else 'Negative'
     return jsonify({'prediction': result})
 
+@app.route('/testme', methods=['GET'])
+def testme():
+    return '''
+    <form action="/testme" method="post">
+        <textarea name="tweet" rows="10" cols="50"></textarea><br>
+        <input type="submit" value="Submit">
+    </form>
+    '''
+
+@app.route('/testme', methods=['POST'])
+def testme_post():
+    tweet = request.form['tweet']
+    stemmed_tweet = stemming(tweet)
+    X_test = load_vectorizer.transform([stemmed_tweet])
+
+    prediction = load_model.predict(X_test)
+
+    result = 'Positive' if prediction[0] == 1 else 'Negative'
+    return render_template('result.html', prediction=result)
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=3000)
+

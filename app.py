@@ -23,6 +23,12 @@ def stemming(content):
     stemmed_content= ' '.join(stemmed_content)
     return stemmed_content
 
+@app.route('/', methods=['GET'])
+def home():
+    return '''
+    <h1>This a project using NLP to predict whether a tweet is positive or negative.</h1>
+    <p>Send a POST request to /predict with a json payload of the form {"tweet": "Some tweet"}</p>
+    '''
 
 @app.route('/predict', methods=['POST'])
 def predict():

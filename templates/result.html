@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Result</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-500 to-pink-500 flex items-center justify-center">
+    <div class="bg-white bg-opacity-90 rounded-2xl shadow-2xl p-8 max-w-2xl w-full mx-4 text-center transform transition-all hover:scale-105">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">Sentiment Prediction</h1>
+        <p class="text-gray-600 italic mb-4">"{{ tweet }}"</p>
+        <p class="text-2xl font-semibold text-indigo-600 mb-6">The sentiment is: <span class="{% if prediction == 'Positive' %}text-green-500{% else %}text-red-500{% endif %}">{{ prediction }}</span></p>
+        <div class="space-x-4">
+            <a href="/testme" class="inline-block bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-700 transition duration-300">Try Another Tweet</a>
+            <a href="/" class="inline-block bg-gray-200 text-gray-800 font-semibold py-3 px-6 rounded-lg hover:bg-gray-300 transition duration-300">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

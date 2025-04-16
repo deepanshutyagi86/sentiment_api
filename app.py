@@ -25,10 +25,7 @@ def stemming(content):
 
 @app.route('/', methods=['GET'])
 def home():
-    return '''
-    <h1>This a project using NLP to predict whether a tweet is positive or negative.</h1>
-    <p>Send a POST request to /predict with a json payload of the form {"tweet": "Some tweet"}</p>
-    '''
+    return render_template('index.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -37,6 +34,8 @@ def predict():
         return jsonify({'error': 'No tweet provided.'}), 400
     
     tweet = data['tweet']
+    if not tweet.strip():
+        return jsonify({'error': 'Tweet is empty.'}), 400
 
     stemmed_tweet = stemming(tweet)
     X_test = load_vectorizer.transform([stemmed_tweet])
@@ -48,23 +47,19 @@ def predict():
 
 @app.route('/testme', methods=['GET'])
 def testme():
-    return '''
-    <form action="/testme" method="post">
-        <textarea name="tweet" rows="10" cols="50"></textarea><br>
-        <input type="submit" value="Submit">
-    </form>
-    '''
+    return render_template('testme.html')
 
 @app.route('/testme', methods=['POST'])
 def testme_post():
     tweet = request.form['tweet']
+    if not tweet or not tweet.strip():
+        return render_template('testme.html', error='Please enter a tweet.')
+    
     stemmed_tweet = stemming(tweet)
     X_test = load_vectorizer.transform([stemmed_tweet])
-
     prediction = load_model.predict(X_test)
-
     result = 'Positive' if prediction[0] == 1 else 'Negative'
-    return render_template('result.html', prediction=result)
+    return render_template('result.html', prediction=result, tweet=tweet)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=3000)
